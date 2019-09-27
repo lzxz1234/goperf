@@ -688,8 +688,8 @@ func setBufferSizes(conn *net.TCPConn, rbs int, wbs int) int {
 
 	fd, _ := conn.File()
 
-	valRcv, _ := syscall.GetsockoptInt(int(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_RCVBUF)
-	valSnd, _ := syscall.GetsockoptInt(int(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_SNDBUF)
+	valRcv, _ := syscall.GetsockoptInt(syscall.Handle(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_RCVBUF)
+	valSnd, _ := syscall.GetsockoptInt(syscall.Handle(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_SNDBUF)
 	fmt.Printf("Startup socket read buffer size=%v \n", valRcv)
 	fmt.Printf("Startup socket send buffer size=%v \n", valSnd)
 
@@ -702,7 +702,7 @@ func setBufferSizes(conn *net.TCPConn, rbs int, wbs int) int {
 				err.Error())
 			return 10
 		}
-		valRcv, _ = syscall.GetsockoptInt(int(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_RCVBUF)
+		valRcv, _ = syscall.GetsockoptInt(syscall.Handle(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_RCVBUF)
 		fmt.Printf("Called SetReadBuffer with value=%v, readback shows value=%v \n", rbs, valRcv)
 	}
 
@@ -715,7 +715,7 @@ func setBufferSizes(conn *net.TCPConn, rbs int, wbs int) int {
 				err.Error())
 			return 10
 		}
-		valSnd, _ = syscall.GetsockoptInt(int(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_SNDBUF)
+		valSnd, _ = syscall.GetsockoptInt(syscall.Handle(fd.Fd()), syscall.SOL_SOCKET, syscall.SO_SNDBUF)
 		fmt.Printf("Called SetWriteBuffer with value=%v, readback shows value=%v \n", wbs, valSnd)
 	}
 
